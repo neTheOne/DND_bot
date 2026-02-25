@@ -36,7 +36,7 @@ def back_btn(call):
 def text(message):
     print(message)
     bot.send_message(chat_id=message.chat.id,
-                     text='О, Это стикер, Скебобоб')
+                     text='О, Это стикер, Скебоб')
 
 bot.polling()
 # TODO: Разобраться, как работает стандратная библеотека Logging, прописать логи разных уровней.
