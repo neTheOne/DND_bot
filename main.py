@@ -1,10 +1,12 @@
 import telebot
+import logging
+import log
 import configs
 import keyboards
 
 bot = telebot.TeleBot(configs.TOKEN)
 
-# TODO: Тут я вызываю функцию настройки лога
+log.log_init()
 
 
 @bot.message_handler(commands=['start'])
@@ -12,6 +14,7 @@ def text(message):
     user_first_name = message.from_user.first_name
     bot.send_message(chat_id=message.chat.id,
                      text=f'Hello {user_first_name}!!!!', reply_markup=keyboards.main_menu())
+    logging.info("Succses")
 
 
 @bot.message_handler(content_types=['text'])
@@ -39,7 +42,7 @@ def text(message):
                      text='О, Это стикер, Скебоб')
 
 bot.polling()
-# TODO: Разобраться, как работает стандратная библеотека Logging, прописать логи разных уровней.
+# TODO: Разобраться, как работает стандратная библеотека Logging, прописать логи разных уровней. (ВЫПОЛНЕННО)
 '''
 - Создать файл logs.py
 - В нем создать функцию инициализатора лога

@@ -1,15 +1,16 @@
 """Модуль работы с БД"""
 import psycopg
+import configs
 
 
 def postgres_init(db_name: str):
     try:
         conn = psycopg.connect(
             dbname=db_name,
-            user="postgres",
-            password="Sirden2003",
-            host="127.0.0.1",
-            port="5432"
+            user=configs.USER,
+            password=configs.PASSWORD,
+            host=configs.HOST,
+            port=configs.PORT
         )
         cursor = conn.cursor()
         print("Успешное подключение")
