@@ -20,7 +20,7 @@ def postgres_init(db_name: str):
         return None, None
 
 def test_func_1():
-    conn, cursor = postgres_init(db_name='dnd_tgbot_info') # подключаемся к БД
+    conn, cursor = postgres_init(configs.DB_NAME) # подключаемся к БД
     try:
         cursor.execute(
             'INSERT INTO test_table (test, test1) ' # записываем в таблицу с именем таким то (в столбцы такие-то)
@@ -49,4 +49,4 @@ def test_func_2():
         conn.close() # закрываем соединение
         cursor.close() # закрываем соединение
 
-print(test_func_2())
+

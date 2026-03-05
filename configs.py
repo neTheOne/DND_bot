@@ -1,6 +1,7 @@
 
 TOKEN = '8322016620:AAFlG8xkk2E8noY7hzIBMxZGfOvVa9AJkBo'
 USER = "postgres",
-PASSWORD = "Sirden2003",
+PASSWORD = "0000",
 HOST = "127.0.0.1",
 PORT = "5432"
+DB_NAME = " dnd_tgbot_info"
