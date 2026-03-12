@@ -26,6 +26,9 @@ def new_pers_func(message):
     elif message.text == "Мои персонажи":
         bot.send_message(chat_id=message.chat.id,
                          text='Иди-ка пока нахуй', reply_markup=keyboards.back_button())
+    elif message.text == "Открыть Wiki":
+        bot.send_message(chat_id=message.chat.id,
+                         reply_markup=keyboards.back_button())
 
 
 @bot.callback_query_handler()
@@ -41,6 +44,9 @@ def text(message):
     bot.send_message(chat_id=message.chat.id,
                      text='О, Это стикер, Скебоб')
 
+
+@bot.message_handler()
+
 bot.polling()
 # TODO: Разобраться, как работает стандратная библеотека Logging, прописать логи разных уровней. (ВЫПОЛНЕННО)
 '''
@@ -54,7 +60,7 @@ bot.polling()
 # TODO: Название DB вынести в конфиг, в функциях вызывать переменную из конфига (ВЫПОЛНЕННО)
 # TODO: Переименовать модули согласно, PEP8
 # TODO: Прочитать любые десять статей в PEP8 и рассказать Саше 
-# TODO: Создать файлик test.py  перенести туда все дерьмо
+# TODO: Создать файлик test.py  перенести туда все дерьмо (ВЫПОЛНЕННО)
 # TODO: Дозаполнить базу данных
 # TODO: В разделе создать персонажа выполнить следующий скрипт
 """
