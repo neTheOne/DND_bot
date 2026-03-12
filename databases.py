@@ -2,9 +2,11 @@
 import psycopg
 import configs
 import logging
-import log
+import log_handler
+import json_loader
+import json
 
-log.log_init()
+log_handler.log_init()
 
 def postgres_init(db_name: str):
     try:
@@ -55,16 +57,14 @@ def add_info_table(json):
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """,
-
-                    int(row["id"]),
+                    int(row["class_id"]),
                     row.get("recommended_stat"),
                     [int(x) for x in row.get("spells", [])],
                     row.get("class_name"),
                     row.get("description"),
                     row.get("hp_dice"),
-                    json(row.get("skills", {}))
+                    json.dumps(row.get("class_skills", {}))
                 )
-            )
             conn.commit()
             logging.info("Данные успешно добавлены")
     except psycopg.Error as error:

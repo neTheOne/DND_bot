@@ -1,6 +1,7 @@
-from databases import postgres_init
+from databases import postgres_init, clean_table, add_info_table
 import psycopg
 import configs
+import json_loader
 
 
 def test_func_1():
@@ -37,3 +38,6 @@ def test_func_2(column, table):
         cursor.close() # закрываем соединение
 
 
+#clean_table("class_table")
+json_data = json_loader.read_js("json\data.json")
+add_info_table(json_data)

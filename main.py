@@ -1,14 +1,13 @@
 import telebot
 import logging
-import log
+import log_handler
 import configs
 import keyboards
 import databases
 
 bot = telebot.TeleBot(configs.TOKEN)
 
-log.log_init()
-
+log_handler.log_init()
 
 @bot.message_handler(commands=['start'])
 def text(message):
@@ -55,11 +54,11 @@ bot.polling()
 '''
 # TODO: Все чувствительные данные перенести в конфиг (ВЫПОЛНЕННО)
 # TODO: Название DB вынести в конфиг, в функциях вызывать переменную из конфига (ВЫПОЛНЕННО)
-# TODO: Переименовать модули согласно, PEP8
-# TODO: Прочитать любые десять статей в PEP8 и рассказать Саше 
+# TODO: Переименовать модули согласно, PEP8 (ВЫПОЛНЕННО)
+# TODO: Прочитать любые десять статей в PEP8 и рассказать Саше (ВЫПОЛНЕННО)
 # TODO: Создать файлик test.py  перенести туда все дерьмо (ВЫПОЛНЕННО)
 # TODO: Дозаполнить базу данных (Выполнено)
-# TODO: В разделе создать персонажа выполнить следующий скрипт
+# TODO: В разделе создать персонажа выполнить следующий скрипт !!!!
 """
 - Подключиться к БД
 - Из таблицы достать все классы
