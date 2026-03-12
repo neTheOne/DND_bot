@@ -20,15 +20,20 @@ def test_func_1():
         cursor.close() # закрываем соединение
 
 
-def test_func_2():
+def test_func_2(column, table):
     conn, cursor = postgres_init(db_name='dnd_tgbot_info') # подключаемся к БД
     try:
-        cursor.execute('SELECT name FROM test_table WHERE test = %s', (100,))
+        cursor.execute(f'SELECT {column} FROM {table}')
         data = cursor.fetchone() # получаем первое найденное значение (из БД мы получаем кортеж)
         conn.commit() # сохраняем изменения, запись и т.д
-        return data[0] # возвращаем нужное значение
+        class_names = [row[0] for row in data]
+
+        return class_names # возвращаем нужное значение
+
     except psycopg.Error as error:
         print(f'Ошибка: {error}')
     finally:
         conn.close() # закрываем соединение
         cursor.close() # закрываем соединение
+
+

@@ -3,6 +3,7 @@ import logging
 import log
 import configs
 import keyboards
+import databases
 
 bot = telebot.TeleBot(configs.TOKEN)
 
@@ -17,12 +18,12 @@ def text(message):
     logging.info("Succses")
 
 
-@bot.message_handler(content_types=['text'])
+@bot.message_handler(content_types=["Создать персонажа"])
 def new_pers_func(message):
-    user_id = message.from_user.id
+
     if message.text == "Создать персонажа":
         bot.send_message(chat_id=message.chat.id,
-                         text='Создаю', reply_markup=keyboards.back_button())
+                         text='Выберите класс', reply_markup=keyboards.class_button())
     elif message.text == "Мои персонажи":
         bot.send_message(chat_id=message.chat.id,
                          text='Иди-ка пока нахуй', reply_markup=keyboards.back_button())
@@ -33,7 +34,6 @@ def new_pers_func(message):
 
 @bot.callback_query_handler()
 def back_btn(call):
-    user_id = call.from_user.id
     bot.send_message(chat_id=call.message.chat.id,
                      text='Бро, хорошо. Давай вернмся на шаг назад', reply_markup=keyboards.main_menu())
 
@@ -43,9 +43,6 @@ def text(message):
     print(message)
     bot.send_message(chat_id=message.chat.id,
                      text='О, Это стикер, Скебоб')
-
-
-@bot.message_handler()
 
 bot.polling()
 # TODO: Разобраться, как работает стандратная библеотека Logging, прописать логи разных уровней. (ВЫПОЛНЕННО)
@@ -61,7 +58,7 @@ bot.polling()
 # TODO: Переименовать модули согласно, PEP8
 # TODO: Прочитать любые десять статей в PEP8 и рассказать Саше 
 # TODO: Создать файлик test.py  перенести туда все дерьмо (ВЫПОЛНЕННО)
-# TODO: Дозаполнить базу данных
+# TODO: Дозаполнить базу данных (Выполнено)
 # TODO: В разделе создать персонажа выполнить следующий скрипт
 """
 - Подключиться к БД

@@ -1,5 +1,6 @@
 """Модуль с клавиатурами"""
 from telebot import types
+import databases
 
 def main_menu():
     '''
@@ -9,7 +10,6 @@ def main_menu():
     menu_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     add_pers = types.KeyboardButton(text="Создать персонажа")
     view_pers = types.KeyboardButton(text="Мои персонажи")
-    wiki = types.KeyboardButton(text="Открыть Wiki")
     menu_keyboard.add(add_pers, view_pers)
 
     return menu_keyboard
@@ -27,12 +27,19 @@ def back_button():
 
     return keyboard
 
-def wiki_button():
-    '''
-    Функция для вывода кнопок меню wiki
-    :return: кнопки
-    '''
+
+def class_button():
+    """
+    Вывод inline клавиатуры со всему классами
+    :param class_names: имена классов
+    :return: inline клавиатура
+    """
+    class_names = databases.get_info_table("class_name", "class_table")
+    class_id = databases.get_info_table("class_id", "class_table")
     keyboard = types.InlineKeyboardMarkup()
-    class_wiki_button = types.InlineKeyboardButton(text="Инфорамция о классах",
-                                                     callback_data='class_wiki')
-    keyboard.add(class_wiki_button)
+    for class_name in class_names:
+        class_button = types.InlineKeyboardButton(text=class_name,
+                                                     callback_data=f"class_{class_id}")
+        keyboard.add(class_button)
+
+    return keyboard
