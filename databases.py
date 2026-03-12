@@ -38,7 +38,7 @@ def clean_table(table_name):
         cursor.close()  # закрываем соединение
 
 
-def add_info_table(table_name, json):
+def add_info_table(json):
     conn, cursor = postgres_init(configs.DB_NAME)  # подключаемся к БД
     try:
         for row in json["class_table"]:
@@ -55,7 +55,7 @@ def add_info_table(table_name, json):
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """,
-                (
+
                     int(row["id"]),
                     row.get("recommended_stat"),
                     [int(x) for x in row.get("spells", [])],
