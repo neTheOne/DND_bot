@@ -1,7 +1,17 @@
-TOKEN = '8322016620:AAFlG8xkk2E8noY7hzIBMxZGfOvVa9AJkBo'
+import configparser
 
-USER = "postgres"
-PASSWORD = "0000"
-HOST = "127.0.0.1"
-PORT = "5432"
-DB_INFO_NAME = "dnd_tgbot_info"
+
+config = configparser.ConfigParser()
+config.read("config.ini")
+
+USER = config["DB_INFO"]["USER"]
+PASSWORD = config["DB_INFO"]["PASSWORD"]
+HOST = config["DB_INFO"]["HOST"]
+PORT = config["DB_INFO"]["PORT"]
+DB_INFO_NAME = config["DB_INFO"]["DB_INFO_NAME"]
+DB_MAIN_INFO = config["DB_INFO"]["DB_MAIN_NAME"]
+
+TOKEN = config["DB_INFO"]["TOKEN"]
+
+PROTOCOL = config["DB_INFO"]["PROTOCOL"]
+ADDRESS = config["DB_INFO"]["ADDRESS"]
