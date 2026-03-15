@@ -112,7 +112,7 @@ def get_class_info():
 def get_class_info(class_id):
     """
     Функция для вывода инфорамции о классе
-    :param name: class_id - id класса
+    :param class_id: class_id - id класса
     :return: recommend_stats, spells, class_name, class_description, class_skills, hp_dice
     """
     conn, cursor = postgres_init(configs.DB_INFO_NAME)  # подключаемся к БД
@@ -122,7 +122,7 @@ def get_class_info(class_id):
             'FROM class_table '
             'WHERE class_id = %s',
             (class_id, ))
-        raw_data_class = cursor.fetchall()
+        raw_data_class = cursor.fetchone()
 
         return raw_data_class
 
