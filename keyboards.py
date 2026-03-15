@@ -34,10 +34,11 @@ def class_button():
     :param class_names: имена классов
     :return: inline клавиатура
     """
-    class_names = databases.get_info_table("class_name", "class_table")
-    class_id = databases.get_info_table("class_id", "class_table")
+    class_names = databases.get_class_info()
     keyboard = types.InlineKeyboardMarkup()
-    for class_name in class_names:
+    for class_data in class_names:
+        class_id = class_data[0]
+        class_name = class_data[1]
         class_button = types.InlineKeyboardButton(text=class_name,
                                                      callback_data=f"class_{class_id}")
         keyboard.add(class_button)

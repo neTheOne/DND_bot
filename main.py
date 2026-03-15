@@ -17,7 +17,7 @@ def text(message):
     logging.info("Succses")
 
 
-@bot.message_handler(content_types=["Создать персонажа"])
+@bot.message_handler(content_types=["text"])
 def new_pers_func(message):
 
     if message.text == "Создать персонажа":
@@ -33,6 +33,10 @@ def new_pers_func(message):
 
 @bot.callback_query_handler()
 def back_btn(call):
+    callback_info = call.data
+    if "class" in callback_info:
+        call_split = callback_info.split("_")
+        class_id = int(call_split[1])
     bot.send_message(chat_id=call.message.chat.id,
                      text='Бро, хорошо. Давай вернмся на шаг назад', reply_markup=keyboards.main_menu())
 
@@ -52,11 +56,8 @@ bot.polling()
 - В main.py вызвать функцию настройки
 - Я великолепен 
 '''
-# TODO: Все чувствительные данные перенести в конфиг (ВЫПОЛНЕННО)
-# TODO: Название DB вынести в конфиг, в функциях вызывать переменную из конфига (ВЫПОЛНЕННО)
-# TODO: Переименовать модули согласно, PEP8 (ВЫПОЛНЕННО)
-# TODO: Прочитать любые десять статей в PEP8 и рассказать Саше (ВЫПОЛНЕННО)
-# TODO: Создать файлик test.py  перенести туда все дерьмо (ВЫПОЛНЕННО)
+
+# TODO: Переименовать модули согласно, PEP8
 # TODO: Дозаполнить базу данных (Выполнено)
 # TODO: В разделе создать персонажа выполнить следующий скрипт !!!!
 """
@@ -71,6 +72,6 @@ bot.polling()
 """
 https://ru.wikipedia.org/wiki/%D0%9D%D1%83%D0%BC%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%8F_%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D0%B9_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D1%8F
 """
-
 # TODO: Создать отдельные переменные для рызных имен БД, явно указывать какую бд мы вызываем
 # TODO: configparser (заебать Кирилла). Изучить для хранения чувствительных данных, перенести все в config.ini
+# TODO: Дописать обработку callback, используя id класса обратится к бд и получить имя, написать пользователю какой класс он выбрал

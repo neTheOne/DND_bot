@@ -79,7 +79,6 @@ def get_info_table(column, table):
     try:
         cursor.execute(f'SELECT {column} FROM {table}')
         raw_data = cursor.fetchone() # получаем первое найденное значение (из БД мы получаем кортеж)
-        conn.commit() # сохраняем изменения, запись и т.д
         data = [row[0] for row in raw_data]
 
         return data # возвращаем нужное значение
@@ -91,3 +90,16 @@ def get_info_table(column, table):
         cursor.close() # закрываем соединение
 
 
+def get_class_info():
+    conn, cursor = postgres_init(configs.DB_NAME) # подключаемся к БД
+    try:
+        cursor.execute('SELECT class_id, class_name FROM class_table')
+        raw_data_class = cursor.fetchall()
+
+        return raw_data_class
+
+    except psycopg.Error as error:
+        logging.info(f'Ошибка: {error}')
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
