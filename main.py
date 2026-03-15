@@ -1,6 +1,6 @@
 import telebot
 import logging
-import log_handler
+import logs
 import configs
 import keyboards
 import databases
@@ -37,8 +37,8 @@ def back_btn(call):
     if "class" in callback_info:
         call_split = callback_info.split("_")
         class_id = int(call_split[1])
-    bot.send_message(chat_id=call.message.chat.id,
-                     text='Бро, хорошо. Давай вернмся на шаг назад', reply_markup=keyboards.main_menu())
+        bot.send_message(chat_id=call.message.chat.id,
+                         text='Бро, хорошо. Давай вернмся на шаг назад', reply_markup=keyboards.main_menu())
 
 
 @bot.message_handler(content_types=['sticker'])
@@ -57,8 +57,8 @@ bot.polling()
 - Я великолепен 
 '''
 
-# TODO: Переименовать модули согласно, PEP8
-# TODO: Дозаполнить базу данных (Выполнено)
+# TODO: Переименовать модули согласно, PEP8 (ВЫПОЛНЕННО)
+# TODO: Дозаполнить базу данных
 # TODO: В разделе создать персонажа выполнить следующий скрипт !!!!
 """
 - Подключиться к БД

@@ -2,11 +2,11 @@
 import psycopg
 import configs
 import logging
-import log_handler
-import json_loader
+import logs
+import importer
 import json
 
-log_handler.log_init()
+logs.log_init()
 
 def postgres_init(db_name: str):
     try:
@@ -24,7 +24,7 @@ def postgres_init(db_name: str):
         logging.info(f"Ошибка подключения {error}")
         return None, None
 
-
+'''
 def clean_table(table_name):
     conn, cursor = postgres_init(configs.DB_NAME)  # подключаемся к БД
     try:
@@ -88,12 +88,40 @@ def get_info_table(column, table):
     finally:
         conn.close() # закрываем соединение
         cursor.close() # закрываем соединение
-
+'''
 
 def get_class_info():
-    conn, cursor = postgres_init(configs.DB_NAME) # подключаемся к БД
+    """
+    Функция для получения class_id, class_name из таблицы class_table
+    :return: class_id, class_name
+    """
+    conn, cursor = postgres_init(configs.DB_INFO_NAME) # подключаемся к БД
     try:
         cursor.execute('SELECT class_id, class_name FROM class_table')
+        raw_data_class = cursor.fetchall()
+
+        return raw_data_class
+
+    except psycopg.Error as error:
+        logging.info(f'Ошибка: {error}')
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
+
+
+def get_class_info(class_id):
+    """
+    Функция для вывода инфорамции о классе
+    :param name: class_id - id класса
+    :return: recommend_stats, spells, class_name, class_description, class_skills, hp_dice
+    """
+    conn, cursor = postgres_init(configs.DB_INFO_NAME)  # подключаемся к БД
+    try:
+        cursor.execute(
+            'SELECT recommend_stats, spells, class_name, class_description, class_skills, hp_dice '
+            'FROM class_table '
+            'WHERE class_id = %s',
+            (class_id, ))
         raw_data_class = cursor.fetchall()
 
         return raw_data_class

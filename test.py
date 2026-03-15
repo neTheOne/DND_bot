@@ -1,7 +1,7 @@
 from databases import postgres_init, clean_table, add_info_table
 import psycopg
 import configs
-import json_loader
+import importer
 
 
 def test_func_1():

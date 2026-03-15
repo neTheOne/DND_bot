@@ -1,3 +1,4 @@
+'''Модуль обработки логов'''
 import logging
 
 def log_init():
@@ -17,5 +18,3 @@ def log_init():
     logger.addHandler(py_handler)
 
     return logger
-
-
