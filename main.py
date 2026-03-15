@@ -4,6 +4,9 @@ import logs
 import configs
 import keyboards
 import databases
+from telebot import apihelper
+
+apihelper.proxy = {'https':'socks5://Desktop:NsxWYf49th@91.149.221.235:13273'}
 
 bot = telebot.TeleBot(configs.TOKEN)
 
@@ -21,36 +24,40 @@ def text(message):
 def new_pers_func(message):
     if message.text == "Создать персонажа":
         bot.send_message(chat_id=message.chat.id,
-                         text='Выберите класс', reply_markup=keyboards.class_review_button())
+                         text='Выберите класс', reply_markup=keyboards.class_review_keyboard())
     elif message.text == "Мои персонажи":
         bot.send_message(chat_id=message.chat.id,
-                         text='Иди-ка пока нахуй', reply_markup=keyboards.back_button())
+                         text='Иди-ка пока нахуй', reply_markup=keyboards.back_keyboard())
     elif message.text == "Открыть Wiki":
         bot.send_message(chat_id=message.chat.id,
-                         reply_markup=keyboards.back_button())
+                         reply_markup=keyboards.back_keyboard())
 
 
 @bot.callback_query_handler()
 def back_btn(call):
     step = 0
     callback_info = call.data
-    call_split = callback_info.split("_")
-    class_id = int(call_split[1])
-    class_data = databases.get_class_info(class_id)
     if "class" in callback_info:
+        call_split = callback_info.split("_")
+        class_id = int(call_split[1])
+        class_data = databases.get_class_info(class_id)
         step += 1
         bot.send_message(chat_id=call.message.chat.id,
                          text=f"Вы выбрали класс {class_data[2]}. Вывести информацию о нем?",
-                         reply_markup=keyboards.class_info_button())
+                         reply_markup=keyboards.class_info_keyboard())
+    elif 'Test' in callback_info:
+        bot.send_message(chat_id=call.message.chat.id,
+                         text="Бро, пока не работает, не обесуть. Глянь вниз и выбри что ты хочешь")
+    ''' # - Сань, скажи как правильно
     elif "back" in callback_info:
         step -= 1
         if step == 0:
             bot.send_message(chat_id=call.chat.id,
-                            text='Выберите класс', reply_markup=keyboards.class_review_button())
+                            text='Выберите класс', reply_markup=keyboards.class_review_keyboard())
         elif step == 1:
             bot.send_message(chat_id=call.message.chat.id,
                             text=f"Вы выбрали класс {class_data[2]}. Вывести информацию о нем?",
-                            reply_markup=keyboards.class_info_button())
+                            reply_markup=keyboards.class_info_keyboard())
     elif "full_info" in callback_info:
         step += 1
         bot.send_message(chat_id=call.message.chat.id,
@@ -59,11 +66,11 @@ def back_btn(call):
                               f"Умения класса: {class_data[4]}\n"
                               f"Кость хитов класса: {class_data[5]}"
                               f"Описание класса: {class_data[3]}",
-                         reply_markup=keyboards.back_button())
+                         reply_markup=keyboards.back_keyboard())
     elif "forward" in callback_info:
         bot.send_message(chat_id=call.chat.id,
-                         text='Иди-ка пока нахуй', reply_markup=keyboards.back_button())
-
+                         text='Иди-ка пока нахуй', reply_markup=keyboards.back_keyboard())
+    '''
 
 
 
@@ -85,7 +92,7 @@ bot.polling()
 
 # TODO: Переименовать модули согласно, PEP8 (ВЫПОЛНЕННО)
 # TODO: Дозаполнить базу данных
-# TODO: В разделе создать персонажа выполнить следующий скрипт !!!!
+# TODO: В разделе создать персонажа выполнить следующий скрипт !!!! (ВЫПОЛНЕННО)
 """
 - Подключиться к БД
 - Из таблицы достать все классы
@@ -100,4 +107,4 @@ https://ru.wikipedia.org/wiki/%D0%9D%D1%83%D0%BC%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D
 """
 # TODO: Создать отдельные переменные для рызных имен БД, явно указывать какую бд мы вызываем
 # TODO: configparser (заебать Кирилла). Изучить для хранения чувствительных данных, перенести все в config.ini
-# TODO: Дописать обработку callback, используя id класса обратится к бд и получить имя, написать пользователю какой класс он выбрал
+# TODO: Дописать обработку callback, используя id класса обратится к бд и получить имя, написать пользователю какой класс он выбрал (ВЫПОЛНЕННО)

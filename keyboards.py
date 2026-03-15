@@ -3,9 +3,9 @@ from telebot import types
 import databases
 
 
-back_button = types.InlineKeyboardButton(text="Назад", callback_data='back')
-forward_button = types.InlineKeyboardButton(text="Продолжить создание", callback_data='forward')
-info_button = types.InlineKeyboardButton(text="Вывести подробную информацию", callback_data='full_info')
+back_button = types.InlineKeyboardButton(text="Назад", callback_data='Test')
+forward_button = types.InlineKeyboardButton(text="Продолжить создание", callback_data='Test')
+info_button = types.InlineKeyboardButton(text="Вывести подробную информацию", callback_data='Test')
 
 
 def main_menu():
@@ -21,13 +21,12 @@ def main_menu():
     return menu_keyboard
 
 
-def class_review_button():
+def class_review_keyboard():
     """
     Вывод inline клавиатуры со всему классами
-    :param class_names: имена классов
     :return: inline клавиатура
     """
-    class_names = databases.get_class_info()
+    class_names = databases.get_class_id()
     keyboard = types.InlineKeyboardMarkup()
     for class_data in class_names:
         class_id = class_data[0]
@@ -39,7 +38,7 @@ def class_review_button():
     return keyboard
 
 
-def class_info_button():
+def class_info_keyboard():
     """
     Вывод клавиатуры с выбором дальнейших действий
     :return: inline клавиатура
@@ -47,11 +46,14 @@ def class_info_button():
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(back_button, forward_button, info_button)
 
+    return keyboard
 
-def back_button():
+
+def back_keyboard():
     """
     Кнопка возвращения на шаг назад
     :return: inline клавиатура
     """
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(back_button)
+    return keyboard

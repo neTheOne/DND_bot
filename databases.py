@@ -90,7 +90,7 @@ def get_info_table(column, table):
         cursor.close() # закрываем соединение
 '''
 
-def get_class_info():
+def get_class_id():
     """
     Функция для получения class_id, class_name из таблицы class_table
     :return: class_id, class_name
@@ -118,7 +118,7 @@ def get_class_info(class_id):
     conn, cursor = postgres_init(configs.DB_INFO_NAME)  # подключаемся к БД
     try:
         cursor.execute(
-            'SELECT recommend_stats, spells, class_name, class_description, class_skills, hp_dice '
+            'SELECT recommend_stats, spells, class_name, class_description, skills, hp_dice '
             'FROM class_table '
             'WHERE class_id = %s',
             (class_id, ))

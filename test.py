@@ -1,4 +1,4 @@
-from databases import postgres_init, clean_table, add_info_table
+from databases import postgres_init
 import psycopg
 import configs
 import importer
