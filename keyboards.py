@@ -2,6 +2,12 @@
 from telebot import types
 import databases
 
+
+back_button = types.InlineKeyboardButton(text="Назад", callback_data='back')
+forward_button = types.InlineKeyboardButton(text="Продолжить создание", callback_data='forward')
+info_button = types.InlineKeyboardButton(text="Вывести подробную информацию", callback_data='full_info')
+
+
 def main_menu():
     '''
     Функция для создания клавиатуры главного меню
@@ -15,20 +21,7 @@ def main_menu():
     return menu_keyboard
 
 
-def back_button():
-    '''
-    Функция для создания кнопки назад под сообщением
-    :return: кнопка
-    '''
-    keyboard = types.InlineKeyboardMarkup()
-    back_button = types.InlineKeyboardButton(text="Назад",
-                                                     callback_data='back')
-    keyboard.add(back_button)
-
-    return keyboard
-
-
-def class_button():
+def class_review_button():
     """
     Вывод inline клавиатуры со всему классами
     :param class_names: имена классов
@@ -44,3 +37,21 @@ def class_button():
         keyboard.add(class_button)
 
     return keyboard
+
+
+def class_info_button():
+    """
+    Вывод клавиатуры с выбором дальнейших действий
+    :return: inline клавиатура
+    """
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(back_button, forward_button, info_button)
+
+
+def back_button():
+    """
+    Кнопка возвращения на шаг назад
+    :return: inline клавиатура
+    """
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(back_button)

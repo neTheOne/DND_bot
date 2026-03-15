@@ -1,3 +1,4 @@
+'''Модуль для импорта данных'''
 import json
 
 def read_js(filepath):

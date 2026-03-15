@@ -1,13 +1,13 @@
 import telebot
 import logging
-import log_handler
+import logs
 import configs
 import keyboards
 import databases
 
 bot = telebot.TeleBot(configs.TOKEN)
 
-log_handler.log_init()
+logs.log_init()
 
 @bot.message_handler(commands=['start'])
 def text(message):
@@ -19,10 +19,9 @@ def text(message):
 
 @bot.message_handler(content_types=["text"])
 def new_pers_func(message):
-
     if message.text == "Создать персонажа":
         bot.send_message(chat_id=message.chat.id,
-                         text='Выберите класс', reply_markup=keyboards.class_button())
+                         text='Выберите класс', reply_markup=keyboards.class_review_button())
     elif message.text == "Мои персонажи":
         bot.send_message(chat_id=message.chat.id,
                          text='Иди-ка пока нахуй', reply_markup=keyboards.back_button())
@@ -33,12 +32,39 @@ def new_pers_func(message):
 
 @bot.callback_query_handler()
 def back_btn(call):
+    step = 0
     callback_info = call.data
+    call_split = callback_info.split("_")
+    class_id = int(call_split[1])
+    class_data = databases.get_class_info(class_id)
     if "class" in callback_info:
-        call_split = callback_info.split("_")
-        class_id = int(call_split[1])
-    bot.send_message(chat_id=call.message.chat.id,
-                     text='Бро, хорошо. Давай вернмся на шаг назад', reply_markup=keyboards.main_menu())
+        step += 1
+        bot.send_message(chat_id=call.message.chat.id,
+                         text=f"Вы выбрали класс {class_data[2]}. Вывести информацию о нем?",
+                         reply_markup=keyboards.class_info_button())
+    elif "back" in callback_info:
+        step -= 1
+        if step == 0:
+            bot.send_message(chat_id=call.chat.id,
+                            text='Выберите класс', reply_markup=keyboards.class_review_button())
+        elif step == 1:
+            bot.send_message(chat_id=call.message.chat.id,
+                            text=f"Вы выбрали класс {class_data[2]}. Вывести информацию о нем?",
+                            reply_markup=keyboards.class_info_button())
+    elif "full_info" in callback_info:
+        step += 1
+        bot.send_message(chat_id=call.message.chat.id,
+                         text=f"Название класса: {class_data[2]}\n"
+                              f"Рекомендованная характеристика: {class_data[0]}\n"
+                              f"Умения класса: {class_data[4]}\n"
+                              f"Кость хитов класса: {class_data[5]}"
+                              f"Описание класса: {class_data[3]}",
+                         reply_markup=keyboards.back_button())
+    elif "forward" in callback_info:
+        bot.send_message(chat_id=call.chat.id,
+                         text='Иди-ка пока нахуй', reply_markup=keyboards.back_button())
+
+
 
 
 @bot.message_handler(content_types=['sticker'])
@@ -48,9 +74,17 @@ def text(message):
                      text='О, Это стикер, Скебоб')
 
 bot.polling()
+# TODO: Разобраться, как работает стандратная библеотека Logging, прописать логи разных уровней. (ВЫПОЛНЕННО)
+'''
+- Создать файл logs.py
+- В нем создать функцию инициализатора лога
+- В ней настроить лог
+- В main.py вызвать функцию настройки
+- Я великолепен 
+'''
 
-# TODO: Переименовать модули согласно, PEP8
-# TODO: Дозаполнить базу данных 
+# TODO: Переименовать модули согласно, PEP8 (ВЫПОЛНЕННО)
+# TODO: Дозаполнить базу данных
 # TODO: В разделе создать персонажа выполнить следующий скрипт !!!!
 """
 - Подключиться к БД
