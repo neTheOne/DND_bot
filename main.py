@@ -46,11 +46,25 @@ def back_btn(call):
         step -= 1
         if step == 0:
             bot.send_message(chat_id=call.chat.id,
-                             text='Выберите класс', reply_markup=keyboards.class_review_button())
+                            text='Выберите класс', reply_markup=keyboards.class_review_button())
+        elif step == 1:
+            bot.send_message(chat_id=call.message.chat.id,
+                            text=f"Вы выбрали класс {class_data[2]}. Вывести информацию о нем?",
+                            reply_markup=keyboards.class_info_button())
     elif "full_info" in callback_info:
+        step += 1
         bot.send_message(chat_id=call.message.chat.id,
-                         text=f"Вы выбрали класс {class_data}. Вывести информацию о нем?",
-                         reply_markup=keyboards.class_info_button())
+                         text=f"Название класса: {class_data[2]}\n"
+                              f"Рекомендованная характеристика: {class_data[0]}\n"
+                              f"Умения класса: {class_data[4]}\n"
+                              f"Кость хитов класса: {class_data[5]}"
+                              f"Описание класса: {class_data[3]}",
+                         reply_markup=keyboards.back_button())
+    elif "forward" in callback_info:
+        bot.send_message(chat_id=call.chat.id,
+                         text='Иди-ка пока нахуй', reply_markup=keyboards.back_button())
+
+
 
 
 @bot.message_handler(content_types=['sticker'])

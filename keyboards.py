@@ -46,3 +46,12 @@ def class_info_button():
     """
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(back_button, forward_button, info_button)
+
+
+def back_button():
+    """
+    Кнопка возвращения на шаг назад
+    :return: inline клавиатура
+    """
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(back_button)
