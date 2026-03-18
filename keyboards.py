@@ -26,15 +26,18 @@ def class_review_keyboard():
     Вывод inline клавиатуры со всему классами
     :return: inline клавиатура
     """
-    class_names = databases.get_class_id()
-    keyboard = types.InlineKeyboardMarkup()
-    for class_data in class_names:
+    class_data_info = databases.get_class_id()
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    button_list = []
+
+    for class_data in class_data_info:
         class_id = class_data[0]
         class_name = class_data[1]
         class_button = types.InlineKeyboardButton(text=class_name,
                                                      callback_data=f"class_{class_id}")
-        keyboard.add(class_button)
+        button_list.append(class_button)
 
+    keyboard.add(*button_list)
     return keyboard
 
 
@@ -44,7 +47,9 @@ def class_info_keyboard():
     :return: inline клавиатура
     """
     keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(back_button, forward_button, info_button)
+    keyboard.add(back_button)
+    keyboard.add(forward_button)
+    keyboard.add(info_button)
 
     return keyboard
 

@@ -6,11 +6,13 @@ import keyboards
 import databases
 from telebot import apihelper
 
+
+logs.log_init()
+
 apihelper.proxy = {configs.PROTOCOL : configs.ADDRESS}
 
 bot = telebot.TeleBot(configs.TOKEN)
 
-logs.log_init()
 
 @bot.message_handler(commands=['start'])
 def text(message):
@@ -34,14 +36,15 @@ def new_pers_func(message):
 
 
 @bot.callback_query_handler()
-def back_btn(call):
+def call_info(call):
     callback_info = call.data
+    if "choise_class" == callback_info:
+        pass
     if "class" in callback_info:
         call_split = callback_info.split("_")
         class_id = int(call_split[1])
-#       recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
-        _, _, class_name, _, _, _ = databases.get_class_info(
-            class_id)
+#        recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
+        _, _, class_name, _, _, _ = databases.get_class_info(class_id)
         bot.send_message(chat_id=call.message.chat.id,
                          text=f"Вы выбрали класс {class_name}. Вывести информацию о нем?",
                          reply_markup=keyboards.class_info_keyboard())
@@ -57,30 +60,15 @@ def text(message):
                      text='О, Это стикер, Скебоб')
 
 bot.polling()
-# TODO: Разобраться, как работает стандратная библеотека Logging, прописать логи разных уровней. (ВЫПОЛНЕННО)
-'''
-- Создать файл logs.py
-- В нем создать функцию инициализатора лога
-- В ней настроить лог
-- В main.py вызвать функцию настройки
-- Я великолепен 
-'''
 
-# TODO: Переименовать модули согласно, PEP8 (ВЫПОЛНЕННО)
-# TODO: Дозаполнить базу данных (ВЫПОЛНЕННО)
-# TODO: В разделе создать персонажа выполнить следующий скрипт !!!! (ВЫПОЛНЕННО)
+# TODO: Создать директорию для хранения тестовых данных
+# TODO: Имена переменных бд в конфиге конченные.
+# TODO: Добавить подтверждение выбора класса
 """
-- Подключиться к БД
-- Из таблицы достать все классы
-- Сделать массив со всеми классам4
-- Передать массив в клавиатуру и сдедать по кнопке с каждым классом
-- Вывести nline клаввиатуру, где каждая кнопка имя класса, а collback формате class_42
-- В декоратаре обработки callbackов
+1. В подвтерждение доабвить кнопку с выводом информации о классе
+2. Если пользователь подтверждает, переходить расы 
+3. Если пользователь откзаался, показывать список классов
 """
-# TODO: прочитатиь по ссылке ниже
-"""
-https://ru.wikipedia.org/wiki/%D0%9D%D1%83%D0%BC%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%8F_%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D0%B9_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D1%8F
-"""
-# TODO: Создать отдельные переменные для рызных имен БД, явно указывать какую бд мы вызываем (ВЫПОЛНЕННО)
-# TODO: configparser (заебать Кирилла). Изучить для хранения чувствительных данных, перенести все в config.ini (ВЫПОЛНЕННО)
-# TODO: Дописать обработку callback, используя id класса обратится к бд и получить имя, написать пользователю какой класс он выбрал (ВЫПОЛНЕННО)
+# TODO: В подвтерждение доабвить кнопку с выводом информации о классе, без клавиатуры
+# TODO: Добавить логику выбора расы (аналогично классу)
+# TODO: Прочитать как удалять сообщения и удалить сообщения с информацией через 10 секунд

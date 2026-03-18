@@ -25,7 +25,7 @@ def postgres_init(db_name: str):
         return None, None
 
 
-def get_class_id():
+def get_class_id() -> list|tuple:
     """
     Функция для получения class_id, class_name из таблицы class_table
     :return: class_id, class_name
@@ -38,7 +38,9 @@ def get_class_id():
         return raw_data_class
 
     except psycopg.Error as error:
-        logging.info(f'Ошибка: {error}')
+        logging.error(f'Ошибка: {error}')
+
+        return []
     finally:
         conn.close()  # закрываем соединение
         cursor.close()  # закрываем соединение

@@ -16,5 +16,3 @@ def log_init():
     logger = logging.getLogger()
     py_handler = logging.FileHandler("logs\logs.log", mode='w')
     logger.addHandler(py_handler)
-
-    return logger
