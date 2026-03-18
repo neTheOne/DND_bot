@@ -2,7 +2,7 @@ import configparser
 
 
 config = configparser.ConfigParser()
-config.read("config.ini")
+config.read("configs/config.ini")
 
 USER = config["DB_INFO"]["USER"]
 PASSWORD = config["DB_INFO"]["PASSWORD"]
@@ -11,7 +11,7 @@ PORT = config["DB_INFO"]["PORT"]
 DB_INFO_NAME = config["DB_INFO"]["DB_INFO_NAME"]
 DB_MAIN_INFO = config["DB_INFO"]["DB_MAIN_NAME"]
 
-TOKEN = config["DB_INFO"]["TOKEN"]
+TOKEN = config["TOKENS"]["TOKEN"]
 
-PROTOCOL = config["DB_INFO"]["PROTOCOL"]
-ADDRESS = config["DB_INFO"]["ADDRESS"]
+PROTOCOL = config["PROXY"]["PROTOCOL"]
+ADDRESS = config["PROXY"]["ADDRESS"]

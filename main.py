@@ -35,43 +35,19 @@ def new_pers_func(message):
 
 @bot.callback_query_handler()
 def back_btn(call):
-    step = 0
     callback_info = call.data
     if "class" in callback_info:
         call_split = callback_info.split("_")
         class_id = int(call_split[1])
-        class_data = databases.get_class_info(class_id)
-        step += 1
+#       recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
+        _, _, class_name, _, _, _ = databases.get_class_info(
+            class_id)
         bot.send_message(chat_id=call.message.chat.id,
-                         text=f"Вы выбрали класс {class_data[2]}. Вывести информацию о нем?",
+                         text=f"Вы выбрали класс {class_name}. Вывести информацию о нем?",
                          reply_markup=keyboards.class_info_keyboard())
     elif 'Test' in callback_info:
         bot.send_message(chat_id=call.message.chat.id,
                          text="Бро, пока не работает, не обесуть. Глянь вниз и выбри что ты хочешь")
-    ''' # - Сань, скажи как правильно
-    elif "back" in callback_info:
-        step -= 1
-        if step == 0:
-            bot.send_message(chat_id=call.chat.id,
-                            text='Выберите класс', reply_markup=keyboards.class_review_keyboard())
-        elif step == 1:
-            bot.send_message(chat_id=call.message.chat.id,
-                            text=f"Вы выбрали класс {class_data[2]}. Вывести информацию о нем?",
-                            reply_markup=keyboards.class_info_keyboard())
-    elif "full_info" in callback_info:
-        step += 1
-        bot.send_message(chat_id=call.message.chat.id,
-                         text=f"Название класса: {class_data[2]}\n"
-                              f"Рекомендованная характеристика: {class_data[0]}\n"
-                              f"Умения класса: {class_data[4]}\n"
-                              f"Кость хитов класса: {class_data[5]}"
-                              f"Описание класса: {class_data[3]}",
-                         reply_markup=keyboards.back_keyboard())
-    elif "forward" in callback_info:
-        bot.send_message(chat_id=call.chat.id,
-                         text='Иди-ка пока нахуй', reply_markup=keyboards.back_keyboard())
-    '''
-
 
 
 @bot.message_handler(content_types=['sticker'])
@@ -91,12 +67,12 @@ bot.polling()
 '''
 
 # TODO: Переименовать модули согласно, PEP8 (ВЫПОЛНЕННО)
-# TODO: Дозаполнить базу данных
+# TODO: Дозаполнить базу данных (ВЫПОЛНЕННО)
 # TODO: В разделе создать персонажа выполнить следующий скрипт !!!! (ВЫПОЛНЕННО)
 """
 - Подключиться к БД
 - Из таблицы достать все классы
-- Сделать массив со всеми классами
+- Сделать массив со всеми классам4
 - Передать массив в клавиатуру и сдедать по кнопке с каждым классом
 - Вывести nline клаввиатуру, где каждая кнопка имя класса, а collback формате class_42
 - В декоратаре обработки callbackов
