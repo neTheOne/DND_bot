@@ -30,7 +30,7 @@ def get_class_id() -> list|tuple:
     Функция для получения class_id, class_name из таблицы class_table
     :return: class_id, class_name
     """
-    conn, cursor = postgres_init(configs.DB_INFO_NAME) # подключаемся к БД
+    conn, cursor = postgres_init(configs.DB_INFO) # подключаемся к БД
     try:
         cursor.execute('SELECT class_id, class_name FROM class_table')
         raw_data_class = cursor.fetchall()
@@ -46,13 +46,13 @@ def get_class_id() -> list|tuple:
         cursor.close()  # закрываем соединение
 
 
-def get_class_info(class_id):
+def get_class_info(class_id) -> list|tuple:
     """
     Функция для вывода инфорамции о классе
     :param class_id: class_id - id класса
     :return: recommend_stats, spells, class_name, class_description, class_skills, hp_dice
     """
-    conn, cursor = postgres_init(configs.DB_INFO_NAME)  # подключаемся к БД
+    conn, cursor = postgres_init(configs.DB_INFO)  # подключаемся к БД
     try:
         cursor.execute(
             'SELECT recommend_stats, spells, class_name, class_description, skills, hp_dice '
@@ -65,6 +65,29 @@ def get_class_info(class_id):
 
     except psycopg.Error as error:
         logging.info(f'Ошибка: {error}')
+
+        return []
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
+
+
+def get_race_id() -> list|tuple:
+    """
+    Функция для получения race_id, race_name из таблицы race_table
+    :return: race_id, race_name
+    """
+    conn, cursor = postgres_init(configs.DB_INFO) # подключаемся к БД
+    try:
+        cursor.execute('SELECT race_id, race_name FROM race_table')
+        raw_data_race = cursor.fetchall()
+
+        return raw_data_race
+
+    except psycopg.Error as error:
+        logging.error(f'Ошибка: {error}')
+
+        return []
     finally:
         conn.close()  # закрываем соединение
         cursor.close()  # закрываем соединение

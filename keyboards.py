@@ -3,11 +3,6 @@ from telebot import types
 import databases
 
 
-back_button = types.InlineKeyboardButton(text="Назад", callback_data='Test')
-forward_button = types.InlineKeyboardButton(text="Продолжить создание", callback_data='Test')
-info_button = types.InlineKeyboardButton(text="Вывести подробную информацию", callback_data='Test')
-
-
 def main_menu():
     '''
     Функция для создания клавиатуры главного меню
@@ -41,24 +36,37 @@ def class_review_keyboard():
     return keyboard
 
 
-def class_info_keyboard():
+def class_choise_keyboard():
     """
-    Вывод клавиатуры с выбором дальнейших действий
+    Вывод клавиатуры с выбором дальнейших действий выбора класса
     :return: inline клавиатура
     """
     keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(back_button)
-    keyboard.add(forward_button)
-    keyboard.add(info_button)
+    back_button = types.InlineKeyboardButton(text="Назад",
+                                             callback_data='back_choise_class')
+    forward_button = types.InlineKeyboardButton(text="Подтверждаю. Продолжить создание",
+                                                callback_data='choise_class_yes')
+    info_button = types.InlineKeyboardButton(text="Вывести подробную информацию",
+                                             callback_data='show_class_info')
+    keyboard.add(back_button, forward_button, info_button)
 
     return keyboard
 
-
-def back_keyboard():
+def race_review_keyboard():
     """
-    Кнопка возвращения на шаг назад
+    Вывод inline клавиатуры со всеми расами
     :return: inline клавиатура
     """
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(back_button)
+    race_data_info = databases.get_race_id()
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    button_list = []
+
+    for race_data in race_data_info:
+        race_id = race_data[0]
+        race_name = race_data[1]
+        race_button = types.InlineKeyboardButton(text=race_name,
+                                                     callback_data=f"race_{race_id}")
+        button_list.append(race_button)
+
+    keyboard.add(*button_list)
     return keyboard

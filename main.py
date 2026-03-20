@@ -13,6 +13,10 @@ apihelper.proxy = {configs.PROTOCOL : configs.ADDRESS}
 
 bot = telebot.TeleBot(configs.TOKEN)
 
+def choise_class(message):
+    bot.send_message(chat_id=message.chat.id,
+                     text='Выберите класс',
+                     reply_markup=keyboards.class_review_keyboard())
 
 @bot.message_handler(commands=['start'])
 def text(message):
@@ -25,8 +29,7 @@ def text(message):
 @bot.message_handler(content_types=["text"])
 def new_pers_func(message):
     if message.text == "Создать персонажа":
-        bot.send_message(chat_id=message.chat.id,
-                         text='Выберите класс', reply_markup=keyboards.class_review_keyboard())
+        choise_class(message)
     elif message.text == "Мои персонажи":
         bot.send_message(chat_id=message.chat.id,
                          text='Иди-ка пока нахуй', reply_markup=keyboards.back_keyboard())
@@ -38,16 +41,18 @@ def new_pers_func(message):
 @bot.callback_query_handler()
 def call_info(call):
     callback_info = call.data
-    if "choise_class" == callback_info:
-        pass
+    if "choise_class_yes" == callback_info:
+        bot.send_message(chat_id=call.message.chat.id,
+                         text=f"Выберите расу",
+                         reply_markup=keyboards.race_review_keyboard())
     if "class" in callback_info:
         call_split = callback_info.split("_")
         class_id = int(call_split[1])
 #        recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
         _, _, class_name, _, _, _ = databases.get_class_info(class_id)
         bot.send_message(chat_id=call.message.chat.id,
-                         text=f"Вы выбрали класс {class_name}. Вывести информацию о нем?",
-                         reply_markup=keyboards.class_info_keyboard())
+                         text=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
+                         reply_markup=keyboards.class_choise_keyboard())
     elif 'Test' in callback_info:
         bot.send_message(chat_id=call.message.chat.id,
                          text="Бро, пока не работает, не обесуть. Глянь вниз и выбри что ты хочешь")
@@ -61,12 +66,12 @@ def text(message):
 
 bot.polling()
 
-# TODO: Создать директорию для хранения тестовых данных
-# TODO: Имена переменных бд в конфиге конченные.
+# TODO: Создать директорию для хранения тестовых данных (Выполенно)
+# TODO: Имена переменных бд в конфиге конченные. (Выполенно)
 # TODO: Добавить подтверждение выбора класса
 """
 1. В подвтерждение доабвить кнопку с выводом информации о классе
-2. Если пользователь подтверждает, переходить расы 
+2. Если пользователь подтверждает, переходить к выбору расы 
 3. Если пользователь откзаался, показывать список классов
 """
 # TODO: В подвтерждение доабвить кнопку с выводом информации о классе, без клавиатуры
