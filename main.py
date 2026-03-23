@@ -13,8 +13,8 @@ apihelper.proxy = {configs.PROTOCOL : configs.ADDRESS}
 
 bot = telebot.TeleBot(configs.TOKEN)
 
-def choise_class(message):
-    bot.send_message(chat_id=message.chat.id,
+def choise_class(chat_id):
+    bot.send_message(chat_id=chat_id,
                      text='Выберите класс',
                      reply_markup=keyboards.class_review_keyboard())
 
@@ -29,7 +29,7 @@ def text(message):
 @bot.message_handler(content_types=["text"])
 def new_pers_func(message):
     if message.text == "Создать персонажа":
-        choise_class(message)
+        choise_class(message.chat.id)
     elif message.text == "Мои персонажи":
         bot.send_message(chat_id=message.chat.id,
                          text='Иди-ка пока нахуй', reply_markup=keyboards.back_keyboard())
@@ -41,7 +41,7 @@ def new_pers_func(message):
 @bot.callback_query_handler()
 def call_info(call):
     callback_info = call.data
-    if "choise_class_yes" == callback_info:
+    if "choise_yes" == callback_info:
         bot.send_message(chat_id=call.message.chat.id,
                          text=f"Выберите расу",
                          reply_markup=keyboards.race_review_keyboard())
@@ -53,6 +53,9 @@ def call_info(call):
         bot.send_message(chat_id=call.message.chat.id,
                          text=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
                          reply_markup=keyboards.class_choise_keyboard())
+
+    if "back_choise" in callback_info:
+        choise_class(call.message.chat.id)
     elif 'Test' in callback_info:
         bot.send_message(chat_id=call.message.chat.id,
                          text="Бро, пока не работает, не обесуть. Глянь вниз и выбри что ты хочешь")
