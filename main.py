@@ -18,6 +18,12 @@ def choise_class(chat_id):
                      text='Выберите класс',
                      reply_markup=keyboards.class_review_keyboard())
 
+
+def choise_race(chat_id):
+    bot.send_message(chat_id=chat_id,
+                     text='Выберите рассу',
+                     reply_markup=keyboards.race_review_keyboard())
+
 @bot.message_handler(commands=['start'])
 def text(message):
     user_first_name = message.from_user.first_name
@@ -41,25 +47,44 @@ def new_pers_func(message):
 @bot.callback_query_handler()
 def call_info(call):
     callback_info = call.data
-    if "choise_yes" == callback_info:
-        bot.send_message(chat_id=call.message.chat.id,
-                         text=f"Выберите расу",
-                         reply_markup=keyboards.race_review_keyboard())
-    if "class" in callback_info:
-        call_split = callback_info.split("_")
-        class_id = int(call_split[1])
-#        recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
-        _, _, class_name, _, _, _ = databases.get_class_info(class_id)
-        bot.send_message(chat_id=call.message.chat.id,
-                         text=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
-                         reply_markup=keyboards.class_choise_keyboard())
-
-    if "back_choise" in callback_info:
-        choise_class(call.message.chat.id)
-    elif 'Test' in callback_info:
-        bot.send_message(chat_id=call.message.chat.id,
-                         text="Бро, пока не работает, не обесуть. Глянь вниз и выбри что ты хочешь")
-
+    chat_id = call.message.chat.id
+    logging.debug(f"callback_info: {callback_info}")
+    if "сonfirm" in callback_info:
+        if "сonfirm_class" in callback_info:
+            if "сonfirm_class_yes" == callback_info:
+                choise_race(chat_id)
+            elif "сonfirm_class_no" == callback_info:
+                choise_class(chat_id)
+            elif "confirm_class_info" == callback_info:
+                pass
+        elif "confirm_race" in callback_info:
+            if "сonfirm_race_yes" == callback_info:
+                pass
+            elif "сonfirm_race_no" == callback_info:
+                choise_race(chat_id)
+            elif "confirm_race_info" == callback_info:
+                pass
+    elif "choise" in callback_info:
+        if "choise_class" in callback_info:
+            if "choise_class_confirm" in callback_info:
+                call_split = callback_info.split("_")
+                class_id = int(call_split[-1])
+        #        recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
+                _, _, class_name, _, _, _ = databases.get_class_info(class_id)
+                bot.send_message(chat_id=call.message.chat.id,
+                                 text=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
+                                 reply_markup=keyboards.class_choise_keyboard())
+            elif "choise_class_review" in callback_info:
+                choise_class(chat_id)
+        elif "choise_race" in callback_info:
+            if "choise_race_confirm" in callback_info:
+                call_split = callback_info.split("_")
+                race_id = int(call_split[-1])
+                #        recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
+                _, _, _, race_name = databases.get_race_info(race_id)
+                bot.send_message(chat_id=call.message.chat.id,
+                                 text=f"Вы выбрали расу {race_name}. Подтверждаете свой выбор?",
+                                 reply_markup=keyboards.class_choise_keyboard())
 
 @bot.message_handler(content_types=['sticker'])
 def text(message):
@@ -71,7 +96,7 @@ bot.polling()
 
 # TODO: Создать директорию для хранения тестовых данных (Выполенно)
 # TODO: Имена переменных бд в конфиге конченные. (Выполенно)
-# TODO: Добавить подтверждение выбора класса
+# TODO: Добавить подтверждение выбора класса (Выполенно)
 """
 1. В подвтерждение доабвить кнопку с выводом информации о классе
 2. Если пользователь подтверждает, переходить к выбору расы 

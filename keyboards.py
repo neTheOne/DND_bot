@@ -29,7 +29,7 @@ def class_review_keyboard():
         class_id = class_data[0]
         class_name = class_data[1]
         class_button = types.InlineKeyboardButton(text=class_name,
-                                                     callback_data=f"class_{class_id}")
+                                                     callback_data=f"choise_class_confirm_{class_id}")
         button_list.append(class_button)
 
     keyboard.add(*button_list)
@@ -43,11 +43,11 @@ def class_choise_keyboard():
     """
     keyboard = types.InlineKeyboardMarkup()
     back_button = types.InlineKeyboardButton(text="Назад",
-                                             callback_data='back_choise')
+                                             callback_data='сonfirm_class_no')
     forward_button = types.InlineKeyboardButton(text="Подтверждаю. Продолжить создание",
-                                                callback_data='choise_yes')
+                                                callback_data='сonfirm_class_yes')
     info_button = types.InlineKeyboardButton(text="Вывести подробную информацию",
-                                             callback_data='show_class_info')
+                                             callback_data='confirm_class_info')
     keyboard.add(back_button, forward_button, info_button)
 
     return keyboard
@@ -65,7 +65,7 @@ def race_review_keyboard():
         race_id = race_data[0]
         race_name = race_data[1]
         race_button = types.InlineKeyboardButton(text=race_name,
-                                                     callback_data=f"race_{race_id}")
+                                                     callback_data=f"choise_race_confirm_{race_id}")
         button_list.append(race_button)
 
     keyboard.add(*button_list)

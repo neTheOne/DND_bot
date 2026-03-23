@@ -91,3 +91,30 @@ def get_race_id() -> list|tuple:
     finally:
         conn.close()  # закрываем соединение
         cursor.close()  # закрываем соединение
+
+
+def get_race_info(race_id) -> list|tuple:
+    """
+    Функция для вывода инфорамции о расе
+    :param class_id: race_id - id расы
+    :return: speed, race_description, race_skill, race_name
+    """
+    conn, cursor = postgres_init(configs.DB_INFO)  # подключаемся к БД
+    try:
+        cursor.execute(
+            'SELECT speed, race_description, race_skill, race_name '
+            'FROM race_table '
+            'WHERE race_id = %s',
+            (race_id, ))
+        raw_data_race = cursor.fetchone()
+        logging.debug(f"Вывод из функции get_race_info: {raw_data_race}")
+
+        return raw_data_race
+
+    except psycopg.Error as error:
+        logging.info(f'Ошибка: {error}')
+
+        return []
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
