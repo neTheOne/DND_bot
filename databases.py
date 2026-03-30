@@ -93,10 +93,10 @@ def get_race_id() -> list|tuple:
         cursor.close()  # закрываем соединение
 
 
-def get_race_info(race_id) -> list|tuple:
+def get_race_info(race_id: int) -> list|tuple:
     """
     Функция для вывода инфорамции о расе
-    :param class_id: race_id - id расы
+    :param race_id: race_id - id расы
     :return: speed, race_description, race_skill, race_name
     """
     conn, cursor = postgres_init(configs.DB_INFO)  # подключаемся к БД

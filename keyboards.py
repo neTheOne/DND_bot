@@ -44,7 +44,7 @@ def class_choise_keyboard(class_id):
     """
     keyboard = types.InlineKeyboardMarkup()
     back_button = types.InlineKeyboardButton(text="Назад",
-                                             callback_data=f'confirm_class_no')
+                                             callback_data=f'choise_class')
     forward_button = types.InlineKeyboardButton(text="Подтверждаю. Продолжить создание",
                                                 callback_data=f'confirm_class_yes')
     info_button = types.InlineKeyboardButton(text="Вывести подробную информацию",
