@@ -18,13 +18,23 @@ apihelper.proxy = {configs.PROTOCOL : configs.ADDRESS}
 
 bot = telebot.TeleBot(configs.TOKEN)
 
-def choise_class(chat_id):
+def choise_class(chat_id: int):
+    """
+    Функция для вывода клавиатуры для выбора класса
+    :param chat_id: id чата в который надо отправить клавиатуру
+    :return: inline клавиатура
+    """
     bot.send_message(chat_id=chat_id,
                      text='Выберите класс',
                      reply_markup=keyboards.class_review_keyboard())
 
 
-def choise_race(chat_id):
+def choise_race(chat_id: int):
+    """
+    Функция для вывода клавиатуры для выбора расы
+    :param chat_id: id чата в который надо отправить клавиатуру
+    :return: inline клавиатура
+    """
     bot.send_message(chat_id=chat_id,
                      text='Выберите рассу',
                      reply_markup=keyboards.race_review_keyboard())
@@ -51,15 +61,22 @@ def new_pers_func(message):
 
 @bot.callback_query_handler()
 def call_info(call):
+    """
+    Функция обработки коллбеков
+    :param call:
+    :return:
+    """
     callback_info = call.data
     chat_id = call.message.chat.id
-     # Временная переменная использующаяся для хранения id класса до его подтверждения
     logging.debug(f"callback_info: {callback_info}")
+
     if "choise" in callback_info:
         if "choise_class" == callback_info:
-            # основная функция по выбору класса
             choise_class(chat_id)
-        if "choise_class" in callback_info:
+        elif "choise_race" == callback_info:
+            choise_race(chat_id)
+
+        elif "choise_class" in callback_info:
             if "choise_class_confirm" in callback_info:
                 call_split = callback_info.split("_")
                 class_id_temp = int(call_split[-1])      # Временная переменная испольpycзующаяся для хранения id класса до его подтверждения
@@ -70,8 +87,7 @@ def call_info(call):
                                photo=open(f'media/pers_img{class_id_temp}.jpg', 'rb'),
                                caption=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
                                reply_markup=keyboards.class_choise_keyboard(class_id_temp))
-            elif "choise_class_review" in callback_info:
-                choise_class(chat_id)
+
         elif "choise_race" in callback_info:
             if "choise_race_confirm" in callback_info:
                 call_split = callback_info.split("_")
@@ -80,31 +96,21 @@ def call_info(call):
                 bot.send_message(chat_id=call.message.chat.id,
                                  text=f"Вы выбрали расу {race_name}. Подтверждаете свой выбор?",
                                  reply_markup=keyboards.race_choise_keyboard(race_id))
-    elif "confirm" in callback_info:
-        if "confirm_class" in callback_info:
-            if "confirm_class_yes" == callback_info:
-                choise_race(chat_id)
-            elif "confirm_class_no" == callback_info:
-                choise_class(chat_id)
-            elif "confirm_class_info" in callback_info:
-                call_split = callback_info.split("_")
-                class_id_temp = int(call_split[-1])  # Временная переменная использующаяся для хранения id класса до его подтверждения
-                recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id_temp)
-                info_class = bot.send_message(chat_id=chat_id,
-                                text=f"Инфорамация о классе {class_name}\n"
-                                f"Ключевая характеристика: {recommend_stats}\n"
-                                f"Описание класса: {class_description}")
-                time.sleep(15)
-                bot.delete_message(chat_id=chat_id,
-                                   message_id=info_class.message_id)
 
-        elif "confirm_race" in callback_info:
-            if "confirm_race_yes" == callback_info:
-                pass
-            elif "confirm_race_no" == callback_info:
-                choise_race(chat_id)
-            elif "confirm_race_info" == callback_info:
-                pass
+    elif "confirm" in callback_info:
+        if "confirm_class_info" in callback_info:
+            call_split = callback_info.split("_")
+            class_id_temp = int(call_split[-1])  # Временная переменная использующаяся для хранения id класса до его подтверждения
+            recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id_temp)
+            info_class = bot.send_message(chat_id=chat_id,
+                            text=f"Инфорамация о классе {class_name}\n"
+                            f"Ключевая характеристика: {recommend_stats}\n"
+                            f"Описание класса: {class_description}")
+            time.sleep(15)
+            bot.delete_message(chat_id=chat_id,
+                                message_id=info_class.message_id)
+        elif "confirm_race_info" == callback_info:
+            pass
 
 
 @bot.message_handler(content_types=['sticker'])
@@ -116,8 +122,8 @@ def text(message):
 bot.polling()
 
 # TODO: В подвтерждение доабвить кнопку с выводом информации о классе, без клавиатуры (ВЫПОЛНЕННО)
-# TODO: Реализовать пункт 6.5
+# TODO: Реализовать пункт 6.5 
 # TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация
 # TODO: Добавить отображение картинки класса при его выборе. (ВЫПОЛНЕННО)
-# TODO: Создать папку медиа для хранения картинок
+# TODO: Создать папку медиа для хранения картинок (ВЫПОЛНЕННО)
 # TODO: Провести рефакторинг кода

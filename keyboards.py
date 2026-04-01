@@ -36,20 +36,22 @@ def class_review_keyboard():
     return keyboard
 
 
-def class_choise_keyboard(class_id):
+def class_choise_keyboard(class_id: int):
     """
     :param class_id: class_id - id класса
     Вывод клавиатуры с выбором дальнейших действий выбора класса
     :return: inline клавиатура
     """
-    keyboard = types.InlineKeyboardMarkup()
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
     back_button = types.InlineKeyboardButton(text="Назад",
                                              callback_data=f'choise_class')
     forward_button = types.InlineKeyboardButton(text="Подтверждаю. Продолжить создание",
-                                                callback_data=f'confirm_class_yes')
+                                                callback_data=f'choise_race')
     info_button = types.InlineKeyboardButton(text="Вывести подробную информацию",
                                              callback_data=f'confirm_class_info_{class_id}')
-    keyboard.add(back_button, forward_button, info_button)
+
+    button_list = [back_button, forward_button, info_button]
+    keyboard.add(*button_list)
 
     return keyboard
 
@@ -73,19 +75,20 @@ def race_review_keyboard():
     return keyboard
 
 
-def race_choise_keyboard(race_id):
+def race_choise_keyboard(race_id: int):
     """
-    :param race_id: race_id - id класса
-    Вывод клавиатуры с выбором дальнейших действий выбора класса
+    :param race_id: race_id - id расы
+    Вывод клавиатуры с выбором дальнейших действий выбора расы
     :return: inline клавиатура
     """
-    keyboard = types.InlineKeyboardMarkup()
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
     back_button = types.InlineKeyboardButton(text="Назад",
-                                             callback_data=f'confirm_race_no')
+                                             callback_data=f'choise_race')
     forward_button = types.InlineKeyboardButton(text="Подтверждаю. Продолжить создание",
-                                                callback_data=f'confirm_race_yes')
+                                                callback_data=f'choise_background')
     info_button = types.InlineKeyboardButton(text="Вывести подробную информацию",
                                              callback_data=f'confirm_race_info_{race_id}')
-    keyboard.add(back_button, forward_button, info_button)
+    button_list = [back_button, forward_button, info_button]
+    keyboard.add(*button_list)
 
     return keyboard
