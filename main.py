@@ -37,6 +37,17 @@ def choise_race(chat_id: int):
                      text='Выберите рассу',
                      reply_markup=keyboards.race_review_keyboard())
 
+
+def choise_background(chat_id: int):
+    """
+    Функция для вывода клавиатуры для выбора предыстории
+    :param chat_id: id чата в который надо отправить клавиатуру
+    :return: inline клавиатура
+    """
+    bot.send_message(chat_id=chat_id,
+                     text='Выберите предысторию',
+                     reply_markup=keyboards.background_review_keyboard())
+
 @bot.message_handler(commands=['start'])
 def text(message):
     user_first_name = message.from_user.first_name
@@ -73,6 +84,8 @@ def call_info(call):
             choise_class(chat_id)
         elif "choise_race" == callback_info:
             choise_race(chat_id)
+        elif "choise_background" == callback_info:
+            choise_background(chat_id)
 
         elif "choise_class" in callback_info:
             if "choise_class_confirm" in callback_info:
@@ -85,15 +98,24 @@ def call_info(call):
                                photo=open(f'media/pers_img{class_id_temp}.jpg', 'rb'),
                                caption=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
                                reply_markup=keyboards.class_choise_keyboard(class_id_temp))
-
         elif "choise_race" in callback_info:
             if "choise_race_confirm" in callback_info:
                 call_split = callback_info.split("_")
                 race_id = int(call_split[-1])
+                logging.debug(f"В переменную race_id записано значение {race_id}")
                 _, _, _, race_name = databases.get_race_info(race_id)
                 bot.send_message(chat_id=call.message.chat.id,
                                  text=f"Вы выбрали расу {race_name}. Подтверждаете свой выбор?",
                                  reply_markup=keyboards.race_choise_keyboard(race_id))
+        elif "choise_background" in callback_info:
+            if "choise_background_confirm" in callback_info:
+                call_split = callback_info.split("_")
+                background_id = int(call_split[-1])
+                logging.debug(f"В переменную background_id записано значение {background_id}")
+                background_name, _, _, _ = databases.get_background_info(background_id)
+                bot.send_message(chat_id=call.message.chat.id,
+                                 text=f"Вы выбрали предысторию {background_name}. Подтверждаете свой выбор?",
+                                 reply_markup=keyboards.background_choise_keyboard(background_id))
 
     elif "confirm" in callback_info:
         if "confirm_class_info" in callback_info:
@@ -121,7 +143,7 @@ bot.polling()
 
 # TODO: В подвтерждение доабвить кнопку с выводом информации о классе, без клавиатуры (ВЫПОЛНЕННО)
 # TODO: Реализовать пункт 6.5 
-# TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация
+# TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация (ВЫПОЛНЕННО)
 # TODO: Добавить отображение картинки класса при его выборе. (ВЫПОЛНЕННО)
 # TODO: Создать папку медиа для хранения картинок (ВЫПОЛНЕННО)
-# TODO: Провести рефакторинг кода
+# TODO: Провести рефакторинг кода (ВЫПОЛНЕННО)

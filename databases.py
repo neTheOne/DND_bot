@@ -123,3 +123,51 @@ def get_race_info(race_id: int) -> list|tuple:
     finally:
         conn.close()  # закрываем соединение
         cursor.close()  # закрываем соединение
+
+
+def get_background_id() -> list|tuple:
+    """
+    Функция для получения background_id, race_name из таблицы background_table
+    :return: background_id, background_name
+    """
+    conn, cursor = postgres_init(configs.DB_INFO) # подключаемся к БД
+    try:
+        cursor.execute('SELECT backround_id, backround_name FROM background_table')
+        raw_data_background = cursor.fetchall()
+
+        return raw_data_background
+
+    except psycopg.Error as error:
+        logging.error(f'Ошибка: {error}')
+
+        return []
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
+
+
+def get_background_info(background_id: int) -> list|tuple:
+    """
+    Функция для вывода информации о предыстории
+    :param background_id: background_id - id предыстории
+    :return: speed, race_description, race_skill, race_name
+    """
+    conn, cursor = postgres_init(configs.DB_INFO)  # подключаемся к БД
+    try:
+        cursor.execute(
+            'SELECT backround_name, stats, skills, trait_id '
+            'FROM background_table '
+            'WHERE backround_id = %s',
+            (background_id, ))
+        raw_data_background = cursor.fetchone()
+        logging.debug(f"Вывод из функции get_race_info: {raw_data_background}")
+
+        return raw_data_background
+
+    except psycopg.Error as error:
+        logging.info(f'Ошибка: {error}')
+
+        return []
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение

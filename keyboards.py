@@ -92,3 +92,42 @@ def race_choise_keyboard(race_id: int):
     keyboard.add(*button_list)
 
     return keyboard
+
+
+def background_review_keyboard():
+    """
+    Вывод inline клавиатуры со всеми предысториями
+    :return: inline клавиатура
+    """
+    background_data_info = databases.get_background_id()
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    button_list = []
+
+    for race_data in background_data_info:
+        background_id = race_data[0]
+        background_name = race_data[1]
+        background_button = types.InlineKeyboardButton(text=background_name,
+                                                     callback_data=f"choise_background_confirm_{background_id}")
+        button_list.append(background_button)
+
+    keyboard.add(*button_list)
+    return keyboard
+
+
+def background_choise_keyboard(background_id: int):
+    """
+    :param background_id: background_id - id предыстории
+    Вывод клавиатуры с выбором дальнейших действий выбора предыстории
+    :return: inline клавиатура
+    """
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    back_button = types.InlineKeyboardButton(text="Назад",
+                                             callback_data=f'choise_background')
+    forward_button = types.InlineKeyboardButton(text="Подтверждаю. Продолжить создание",
+                                                callback_data=f'choise_background')
+    info_button = types.InlineKeyboardButton(text="Вывести подробную информацию",
+                                             callback_data=f'confirm_background_info_{background_id}')
+    button_list = [back_button, forward_button, info_button]
+    keyboard.add(*button_list)
+
+    return keyboard
