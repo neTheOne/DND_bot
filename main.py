@@ -3,8 +3,6 @@ import time
 import telebot
 import logging
 
-from pyexpat.errors import messages
-
 import logs
 import configs
 import keyboards
@@ -14,7 +12,7 @@ from telebot import apihelper
 
 logs.log_init()
 
-apihelper.proxy = {configs.PROTOCOL : configs.ADDRESS}
+apihelper.proxy = {configs.PROTOCOL : configs.ADDRESS} # инициализация прокси
 
 bot = telebot.TeleBot(configs.TOKEN)
 

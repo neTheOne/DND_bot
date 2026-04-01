@@ -8,7 +8,12 @@ import json
 
 logs.log_init()
 
-def postgres_init(db_name: str):
+def postgres_init(db_name: str) -> tuple:
+    """
+    Функция инициализации БД
+    :param db_name: Имя БД
+    :return: БД
+    """
     try:
         conn = psycopg.connect(
             dbname=db_name,
