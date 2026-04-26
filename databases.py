@@ -2,11 +2,7 @@
 import psycopg
 import configs
 import logging
-import logs
-import importer
-import json
 
-logs.log_init()
 
 def postgres_init(db_name: str) -> tuple:
     """

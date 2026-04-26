@@ -20,7 +20,7 @@ def choise_class(chat_id: int):
     """
     Функция для вывода клавиатуры для выбора класса
     :param chat_id: id чата в который надо отправить клавиатуру
-    :return: inline клавиатура
+    :return: процедура
     """
     bot.send_message(chat_id=chat_id,
                      text='Выберите класс',
@@ -31,7 +31,7 @@ def choise_race(chat_id: int):
     """
     Функция для вывода клавиатуры для выбора расы
     :param chat_id: id чата в который надо отправить клавиатуру
-    :return: inline клавиатура
+    :return: процедура
     """
     bot.send_message(chat_id=chat_id,
                      text='Выберите рассу',
@@ -42,7 +42,7 @@ def choise_background(chat_id: int):
     """
     Функция для вывода клавиатуры для выбора предыстории
     :param chat_id: id чата в который надо отправить клавиатуру
-    :return: inline клавиатура
+    :return: процедура
     """
     bot.send_message(chat_id=chat_id,
                      text='Выберите предысторию',
@@ -57,7 +57,12 @@ def text(message):
 
 
 @bot.message_handler(content_types=["text"])
-def new_pers_func(message):
+def new_pers_func(message: tuple):
+    """
+    Функция для обработки текстового ввода пользователя
+    :param message: картеж передающийся при обработке сообщения и содержащий информацию о сообщении
+    :return: процедура
+    """
     if message.text == "Создать персонажа":
         choise_class(message.chat.id)
     elif message.text == "Мои персонажи":
@@ -69,11 +74,11 @@ def new_pers_func(message):
 
 
 @bot.callback_query_handler()
-def call_info(call):
+def call_info(call: tuple):
     """
     Функция обработки коллбеков
-    :param call:
-    :return:
+    :param call: картеж передающийся при обработке callback и содержащий информацию о callback
+    :return: процедура
     """
     callback_info = call.data
     chat_id = call.message.chat.id
@@ -123,7 +128,7 @@ def call_info(call):
             class_id_temp = int(call_split[-1])  # Временная переменная использующаяся для хранения id класса до его подтверждения
             recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id_temp)
             info_class = bot.send_message(chat_id=chat_id,
-                            text=f"Инфорамация о классе {class_name}\n"
+                            text=f"Информация о классе {class_name}\n"
                             f"Ключевая характеристика: {recommend_stats}\n"
                             f"Описание класса: {class_description}")
             time.sleep(15)
@@ -132,18 +137,17 @@ def call_info(call):
         elif "confirm_race_info" == callback_info:
             pass
 
-
-@bot.message_handler(content_types=['sticker'])
-def text(message):
-    print(message)
-    bot.send_message(chat_id=message.chat.id,
-                     text='О, Это стикер, Скебоб')
-
 bot.polling()
 
-# TODO: В подвтерждение доабвить кнопку с выводом информации о классе, без клавиатуры (ВЫПОЛНЕННО)
-# TODO: Реализовать пункт 6.5 
-# TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация (ВЫПОЛНЕННО)
-# TODO: Добавить отображение картинки класса при его выборе. (ВЫПОЛНЕННО)
-# TODO: Создать папку медиа для хранения картинок (ВЫПОЛНЕННО)
-# TODO: Провести рефакторинг кода (ВЫПОЛНЕННО)
+# TODO: Реализовать пункт 6.5
+# TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация
+# TODO: Провести рефакторинг кода (Перенести все изменяемые данные в конфиг)
+# TODO: Додавить в таблицу предысторий подходящие ID класса
+# TODO: Добавить картинку класса паладина
+# TODO: отсавить одну инициализацию логов в мейн
+# TODO: Закончить с выбором аспектов классов
+# TODO: Поменять пароль у бд (ВЫПОЛНЕННО)
+# TODO: Перенести чувствительнные данные в перемененные окружения (ВЫПОЛНЕННО)
+# TODO: В бд поменять id не с нуля, а с единицы (ВЫПОЛНЕННО)
+# TODO: В папке медиа создать подпапки
+# TODO: Моя приехзать из убекситан, моя плохо понимать русский язык, но моя стараться и првоерить все на орфографию
