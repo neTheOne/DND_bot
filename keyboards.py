@@ -11,7 +11,8 @@ def main_menu() -> types.ReplyKeyboardMarkup:
     menu_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     add_pers = types.KeyboardButton(text="Создать персонажа")
     view_pers = types.KeyboardButton(text="Мои персонажи")
-    menu_keyboard.add(add_pers, view_pers)
+    delete_data = types.KeyboardButton(text="Удалить данные из таблицы пользователей (ВРЕМЕННО)")
+    menu_keyboard.add(add_pers, view_pers, delete_data)
 
     return menu_keyboard
 
@@ -46,7 +47,7 @@ def class_choise_keyboard(class_id: int) -> types.InlineKeyboardMarkup:
     back_button = types.InlineKeyboardButton(text="Назад",
                                              callback_data=f'choise_class')
     forward_button = types.InlineKeyboardButton(text="Подтверждаю. Продолжить создание",
-                                                callback_data=f'choise_race')
+                                                callback_data=f'choise_race_{class_id}')
     info_button = types.InlineKeyboardButton(text="Вывести подробную информацию",
                                              callback_data=f'confirm_class_info_{class_id}')
 

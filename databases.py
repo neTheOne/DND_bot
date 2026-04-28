@@ -151,7 +151,7 @@ def get_background_info(background_id: int) -> list|tuple:
     conn, cursor = postgres_init(configs.DB_INFO)  # подключаемся к БД
     try:
         cursor.execute(
-            'SELECT backround_name, stats, skills, trait_id '
+            'SELECT backround_name, stats, skills, trait_id, prefer_class_id '
             'FROM background_table '
             'WHERE backround_id = %s',
             (background_id, ))
@@ -164,6 +164,40 @@ def get_background_info(background_id: int) -> list|tuple:
         logging.info(f'Ошибка: {error}')
 
         return []
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
+
+
+def write_data(data):
+    """
+    Временное решения для записы данных в таблицу персонажа
+    :param data: записывсемое значние
+    :return: процедура
+    """
+    conn, cursor = postgres_init(configs.DB_MAIN)  # подключаемся к БД
+    try:
+        cursor.execute(
+            'INSERT INTO pers_table(class_id, pers_id) VALUES (%s, 1)',
+            (data, ))
+        conn.commit()
+        logging.debug(f"Значение добавлено {data}")
+    except psycopg.Error as error:
+        logging.info(f'Ошибка: {error}')
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
+
+
+def delete_data():
+    conn, cursor = postgres_init(configs.DB_MAIN)  # подключаемся к БД
+    try:
+        cursor.execute(
+            'TRUNCATE TABLE pers_table RESTART IDENTITY')
+        conn.commit()
+        logging.debug(f"Таблица сброшена")
+    except psycopg.Error as error:
+        logging.info(f'Ошибка: {error}')
     finally:
         conn.close()  # закрываем соединение
         cursor.close()  # закрываем соединение

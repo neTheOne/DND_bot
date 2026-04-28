@@ -68,9 +68,10 @@ def new_pers_func(message: tuple):
     elif message.text == "Мои персонажи":
         bot.send_message(chat_id=message.chat.id,
                          text='Иди-ка пока нахуй', reply_markup=keyboards.back_keyboard())
-    elif message.text == "Открыть Wiki":
+    elif message.text == "Удалить данные из таблицы пользователей (ВРЕМЕННО)":
+        databases.delete_data()
         bot.send_message(chat_id=message.chat.id,
-                         reply_markup=keyboards.back_keyboard())
+                         text='Данные удаленны')
 
 
 @bot.callback_query_handler()
@@ -87,7 +88,10 @@ def call_info(call: tuple):
     if "choise" in callback_info:
         if "choise_class" == callback_info:
             choise_class(chat_id)
-        elif "choise_race" == callback_info:
+        elif "choise_race" in callback_info:
+            call_split = callback_info.split("_")
+            class_id_temp = int(call_split[-1]) # Временная переменная использующаяся для хранения id класса до его подтверждения
+            databases.write_data(class_id_temp)
             choise_race(chat_id)
         elif "choise_background" == callback_info:
             choise_background(chat_id)
@@ -95,7 +99,7 @@ def call_info(call: tuple):
         elif "choise_class" in callback_info:
             if "choise_class_confirm" in callback_info:
                 call_split = callback_info.split("_")
-                class_id_temp = int(call_split[-1])      # Временная переменная испольpycзующаяся для хранения id класса до его подтверждения
+                class_id_temp = int(call_split[-1])      # Временная переменная использующаяся для хранения id класса до его подтверждения
                 logging.debug(f"В переменную class_id_temp записано значение {class_id_temp}")
         #        recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
                 _, _, class_name, _, _, _ = databases.get_class_info(class_id_temp)
@@ -139,7 +143,7 @@ def call_info(call: tuple):
 
 bot.polling()
 
-# TODO: Реализовать пункт 6.5 
+# TODO: Реализовать пункт 6.5
 # TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация
 # TODO: Провести рефакторинг кода (Перенести все изменяемые данные в конфиг)
 # TODO: Додавить в таблицу предысторий подходящие ID класса
