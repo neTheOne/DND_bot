@@ -100,7 +100,7 @@ def call_info(call: tuple):
         #        recommend_stats, spells, class_name, class_description, class_skills, hp_dice = databases.get_class_info(class_id)
                 _, _, class_name, _, _, _ = databases.get_class_info(class_id_temp)
                 bot.send_photo(chat_id=call.message.chat.id,
-                               photo=open(f'media/pers_img{class_id_temp}.jpg', 'rb'),
+                               photo=open(f'media/сlass_media/pers_img{class_id_temp}.jpg', 'rb'),
                                caption=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
                                reply_markup=keyboards.class_choise_keyboard(class_id_temp))
         elif "choise_race" in callback_info:
@@ -139,15 +139,15 @@ def call_info(call: tuple):
 
 bot.polling()
 
-# TODO: Реализовать пункт 6.5
+# TODO: Реализовать пункт 6.5 
 # TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация
 # TODO: Провести рефакторинг кода (Перенести все изменяемые данные в конфиг)
 # TODO: Додавить в таблицу предысторий подходящие ID класса
-# TODO: Добавить картинку класса паладина
-# TODO: отсавить одну инициализацию логов в мейн
+# TODO: Добавить картинку класса паладина (ВЫПОЛНЕННО)
+# TODO: отсавить одну инициализацию логов в мейн (ВЫПОЛНЕННО)
 # TODO: Закончить с выбором аспектов классов
 # TODO: Поменять пароль у бд (ВЫПОЛНЕННО)
 # TODO: Перенести чувствительнные данные в перемененные окружения (ВЫПОЛНЕННО)
 # TODO: В бд поменять id не с нуля, а с единицы (ВЫПОЛНЕННО)
-# TODO: В папке медиа создать подпапки
+# TODO: В папке медиа создать подпапки (ВЫПОЛНЕННО)
 # TODO: Моя приехзать из убекситан, моя плохо понимать русский язык, но моя стараться и првоерить все на орфографию

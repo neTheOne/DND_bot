@@ -3,10 +3,10 @@ from telebot import types
 import databases
 
 
-def main_menu():
+def main_menu() -> types.ReplyKeyboardMarkup:
     '''
     Функция для создания клавиатуры главного меню
-    :return: клавиатура
+    :return: Reply клавиатура
     '''
     menu_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     add_pers = types.KeyboardButton(text="Создать персонажа")
@@ -16,7 +16,7 @@ def main_menu():
     return menu_keyboard
 
 
-def class_review_keyboard():
+def class_review_keyboard() -> types.InlineKeyboardMarkup:
     """
     Вывод inline клавиатуры со всему классами
     :return: inline клавиатура
@@ -36,7 +36,7 @@ def class_review_keyboard():
     return keyboard
 
 
-def class_choise_keyboard(class_id: int):
+def class_choise_keyboard(class_id: int) -> types.InlineKeyboardMarkup:
     """
     :param class_id: class_id - id класса
     Вывод клавиатуры с выбором дальнейших действий выбора класса
@@ -55,7 +55,7 @@ def class_choise_keyboard(class_id: int):
 
     return keyboard
 
-def race_review_keyboard():
+def race_review_keyboard() -> types.InlineKeyboardMarkup:
     """
     Вывод inline клавиатуры со всеми расами
     :return: inline клавиатура
@@ -75,7 +75,7 @@ def race_review_keyboard():
     return keyboard
 
 
-def race_choise_keyboard(race_id: int):
+def race_choise_keyboard(race_id: int) -> types.InlineKeyboardMarkup:
     """
     :param race_id: race_id - id расы
     Вывод клавиатуры с выбором дальнейших действий выбора расы
@@ -94,7 +94,7 @@ def race_choise_keyboard(race_id: int):
     return keyboard
 
 
-def background_review_keyboard():
+def background_review_keyboard() -> types.InlineKeyboardMarkup:
     """
     Вывод inline клавиатуры со всеми предысториями
     :return: inline клавиатура
@@ -114,7 +114,7 @@ def background_review_keyboard():
     return keyboard
 
 
-def background_choise_keyboard(background_id: int):
+def background_choise_keyboard(background_id: int) -> types.InlineKeyboardMarkup:
     """
     :param background_id: background_id - id предыстории
     Вывод клавиатуры с выбором дальнейших действий выбора предыстории
