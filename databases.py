@@ -169,7 +169,7 @@ def get_background_info(background_id: int) -> list|tuple:
         cursor.close()  # закрываем соединение
 
 
-def write_data(data):
+def write_data(data): # Временное решение
     """
     Временное решения для записы данных в таблицу персонажа
     :param data: записывсемое значние
@@ -189,7 +189,11 @@ def write_data(data):
         cursor.close()  # закрываем соединение
 
 
-def delete_data():
+def delete_data(): # Временное решение
+    """
+      Временное решения для удаления данных из таблицы персонажа
+      :return: процедура
+      """
     conn, cursor = postgres_init(configs.DB_MAIN)  # подключаемся к БД
     try:
         cursor.execute(
@@ -198,6 +202,33 @@ def delete_data():
         logging.debug(f"Таблица сброшена")
     except psycopg.Error as error:
         logging.info(f'Ошибка: {error}')
+    finally:
+        conn.close()  # закрываем соединение
+        cursor.close()  # закрываем соединение
+
+def read_pers_table(column_name: str, pers_id: int) -> list|tuple: # Временное решение
+    """
+    Функция для чтения информации о персонаже пользователя.
+    :param column_name: имя столбца
+    :param pers_id: id персонажа
+    :return: Запрашиваемся информсация о персонаже
+    """
+    conn, cursor = postgres_init(configs.DB_MAIN)  # подключаемся к БД
+    try:
+        cursor.execute(
+            f'SELECT {column_name} '
+            'FROM pers_table '
+            'WHERE pers_id = %s',
+            (pers_id,))
+        raw_pers_table = cursor.fetchone()
+        logging.debug(f"Вывод из функции read_pers_table: {raw_pers_table}")
+
+        return raw_pers_table
+
+    except psycopg.Error as error:
+        logging.info(f'Ошибка: {error}')
+
+        return []
     finally:
         conn.close()  # закрываем соединение
         cursor.close()  # закрываем соединение

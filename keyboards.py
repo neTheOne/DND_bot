@@ -1,4 +1,6 @@
 """Модуль с клавиатурами"""
+import logging
+
 from telebot import types
 import databases
 
@@ -104,10 +106,16 @@ def background_review_keyboard() -> types.InlineKeyboardMarkup:
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     button_list = []
 
-    for race_data in background_data_info:
-        background_id = race_data[0]
-        background_name = race_data[1]
-        background_button = types.InlineKeyboardButton(text=background_name,
+    for background_data in background_data_info:
+        background_id = background_data[0]
+        background_name = background_data[1]
+        _, _, _, _, prefer_class_id = databases.get_background_info(background_id)
+        prefer_mark = ""
+        if databases.read_pers_table("class_id", 1)[0] in prefer_class_id:
+            logging.debug(prefer_class_id)
+            prefer_mark = "*"
+            logging.debug("Подходит")
+        background_button = types.InlineKeyboardButton(text=background_name + prefer_mark,
                                                      callback_data=f"choise_background_confirm_{background_id}")
         button_list.append(background_button)
 

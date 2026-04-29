@@ -1,3 +1,4 @@
+import re
 import time
 
 import telebot
@@ -88,7 +89,7 @@ def call_info(call: tuple):
     if "choise" in callback_info:
         if "choise_class" == callback_info:
             choise_class(chat_id)
-        elif "choise_race" in callback_info:
+        elif re.match(r"choise_race_\d", callback_info):
             call_split = callback_info.split("_")
             class_id_temp = int(call_split[-1]) # Временная переменная использующаяся для хранения id класса до его подтверждения
             databases.write_data(class_id_temp)
@@ -107,15 +108,14 @@ def call_info(call: tuple):
                                photo=open(f'media/сlass_media/pers_img{class_id_temp}.jpg', 'rb'),
                                caption=f"Вы выбрали класс {class_name}. Подтверждаете свой выбор?",
                                reply_markup=keyboards.class_choise_keyboard(class_id_temp))
-        elif "choise_race" in callback_info:
-            if "choise_race_confirm" in callback_info:
-                call_split = callback_info.split("_")
-                race_id = int(call_split[-1])
-                logging.debug(f"В переменную race_id записано значение {race_id}")
-                _, _, _, race_name = databases.get_race_info(race_id)
-                bot.send_message(chat_id=call.message.chat.id,
-                                 text=f"Вы выбрали расу {race_name}. Подтверждаете свой выбор?",
-                                 reply_markup=keyboards.race_choise_keyboard(race_id))
+        elif "choise_race_confirm" in callback_info:
+            call_split = callback_info.split("_")
+            race_id = int(call_split[-1])
+            logging.debug(f"В переменную race_id записано значение {race_id}")
+            _, _, _, race_name = databases.get_race_info(race_id)
+            bot.send_message(chat_id=call.message.chat.id,
+                            text=f"Вы выбрали расу {race_name}. Подтверждаете свой выбор?",
+                            reply_markup=keyboards.race_choise_keyboard(race_id))
         elif "choise_background" in callback_info:
             if "choise_background_confirm" in callback_info:
                 call_split = callback_info.split("_")
@@ -143,15 +143,15 @@ def call_info(call: tuple):
 
 bot.polling()
 
-# TODO: Реализовать пункт 6.5
-# TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация
-# TODO: Провести рефакторинг кода (Перенести все изменяемые данные в конфиг)
-# TODO: Додавить в таблицу предысторий подходящие ID класса
+# TODO: Реализовать пункт 6.5 (ВЫПОЛННО)
+# TODO: Во всем проекте должна быть написана документация, докстринги, аннотация и типизация (ВЫПОЛНЕННО)
+# TODO: Провести рефакторинг кода (Перенести все изменяемые данные в конфиг) (ВЫПОЛНЕННО)
+# TODO: Додавить в таблицу предысторий подходящие ID класса (ВЫПОЛНЕННО)
 # TODO: Добавить картинку класса паладина (ВЫПОЛНЕННО)
-# TODO: отсавить одну инициализацию логов в мейн (ВЫПОЛНЕННО)
+# TODO: Оставить одну инициализацию логов в мейн (ВЫПОЛНЕННО)
 # TODO: Закончить с выбором аспектов классов
 # TODO: Поменять пароль у бд (ВЫПОЛНЕННО)
-# TODO: Перенести чувствительнные данные в перемененные окружения (ВЫПОЛНЕННО)
+# TODO: Перенести чувствительные данные в перемененные окружения (ВЫПОЛНЕННО)
 # TODO: В бд поменять id не с нуля, а с единицы (ВЫПОЛНЕННО)
 # TODO: В папке медиа создать подпапки (ВЫПОЛНЕННО)
-# TODO: Моя приехзать из убекситан, моя плохо понимать русский язык, но моя стараться и првоерить все на орфографию
+# TODO: Моя приехзать из убекситан, моя плохо понимать русский язык, но моя стараться и првоерить все на орфографию (ВЫПОЛНЕННО)
